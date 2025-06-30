@@ -8,6 +8,7 @@ function render(text) { render_.innerHTML = text; }
 function request_sp(url="https://subsplease.org/rss/?r=1080") {
     render(`requesting ${url}`);
     fetch(url, { mode: 'cors' }, headers={
+        "Access-Control-Allow-Origin": "*",
         'Accept-Encoding': 'gzip, deflate, br',
         'Accept': '*/*',
         'Connection': 'keep-alive'
@@ -35,7 +36,7 @@ function request_sp(url="https://subsplease.org/rss/?r=1080") {
 }
 
 function request_erai() {
-    request_sp("https://www.erai-raws.info/episodes/feed/?res=1080p&type=magnet&subs%5B0%5D=us&token=011aa6f07b0290dd4b45e237b47fb999");
+    window.location.replace("https://www.erai-raws.info/episodes/feed/?res=1080p&type=magnet&subs%5B0%5D=us&token=011aa6f07b0290dd4b45e237b47fb999");
 }
 </script>
     </head>
