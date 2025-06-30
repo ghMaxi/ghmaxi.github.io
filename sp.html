@@ -6,12 +6,7 @@ function render(text) { render_.innerHTML = text; }
 
 function request_sp(url="https://subsplease.org/rss/?r=1080") {
     render(`requesting ${url}`);
-    fetch(url, { mode: 'cors' }, headers={
-        "Access-Control-Allow-Origin": "*",
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Accept': '*/*',
-        'Connection': 'keep-alive'
-    }).then((res) => {
+    fetch(url).then((res) => {
         if (!res.ok) {
             render(`HTTP error! status: ${res.status}`);
         }
