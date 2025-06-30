@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script src="coi-serviceworker.min.js"></script>
         <script>
 function render(text) { render_.innerHTML = text; }
 
 function request_sp(url="https://subsplease.org/rss/?r=1080") {
     render(`requesting ${url}`);
-    fetch(url).then((res) => {
+    fetch(url, headers={
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Accept': '*/*',
+        'Connection': 'keep-alive'
+    }).then((res) => {
         if (!res.ok) {
             render(`HTTP error! status: ${res.status}`);
         }
