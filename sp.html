@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="coi-serviceworker.min.js"></script>
         <script>
 function render(text) { render_.innerHTML = text; }
 
@@ -43,8 +42,7 @@ function request_erai() {
     <body>
         <button onclick='request_erai();'>erai</button>
         <button onclick='request_sp();'>sp</button>
-        <div id='render_'>waiting for js</div>        
+        <div id='render_'>waiting for js</div>
         <script>request_sp();</script>
     </body>
-    <script>alert(window.crossOriginIsolated);</script>
 </html>
