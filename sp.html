@@ -1,35 +1,41 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script>
+const first = "https://www.erai-raws.info/episodes/feed/?res=1080p&type=magnet&subs%5B0%5D=us&token=011aa6f07b0290dd4b45e237b47fb999";
 
+function render(text) { render_.innerHTML = text; }
+
+function request(url) {
+    render(`requesting ${url}`);
+    fetch(url).then((res) => {
+        if (!res.ok) {
+            render(`HTTP error! status: ${res.status}`);
+        }
+        res.text().then((text) => {
+            render(text);
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(text, 'text/xml');
+            const items = xmlDoc.getElementsByTagName('item');
+            const result = [];
+            for (let i = 0; i < items.length; i++) {
+                const pubDate = items[i].getElementsByTagName('pubDate')[0]?.textContent;
+                const title = items[i].getElementsByTagName('title')[0].textContent;
+                const link = items[i].getElementsByTagName('link')[0].textContent;
+                result.push({ pubDate, title, link });
+            }
+            render(result.map((x) => {
+                console.log(JSON.stringify(x));
+                return `${x["pubDate"]}> ${x["title"]}: <a href='${x["link"]}'>magnet</a>`;
+            }).join('<br>'));
+        });
+    }).catch((err) => { render.innerHTML = err; });
+}
+        </script>
     </head>
     <body>
-        waiting for js
-        <script>
-const url = "https://subsplease.org/rss/?r=1080";
-document.body.innerHTML = `requesting ${url}`;
-fetch(url).then((res) => {
-    if (!res.ok) {
-        document.body.innerHTML = `HTTP error! status: ${res.status}`;
-    }
-    res.text().then((text) => {
-        document.body.innerHTML = text;
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(text, 'text/xml');
-        const items = xmlDoc.getElementsByTagName('item');
-        const result = [];
-        for (let i = 0; i < items.length; i++) {
-            const pubDate = items[i].getElementsByTagName('pubDate')[0]?.textContent;
-            const title = items[i].getElementsByTagName('title')[0].textContent;
-            const link = items[i].getElementsByTagName('link')[0].textContent;
-            result.push({ pubDate, title, link });
-        }
-        document.body.innerHTML = result.map((x) => {
-            console.log(JSON.stringify(x));
-            return `${x["pubDate"]}> ${x["title"]}: <a href='${x["link"]}'>magnet</a>`;
-        }).join('<br>');
-    });
-}).catch((err) => { document.body.innerHTML = err; });
-        </script>
+        <button onclick='request(first);'/>
+        <button onclick='request("https://subsplease.org/rss/?r=1080");'/>
+        <div id='render_'>waiting for js</div>        
     </body>
 </html>
