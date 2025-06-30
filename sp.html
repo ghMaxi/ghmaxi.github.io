@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        waiting for js
+        <script>
+const url = "https://subsplease.org/rss/?r=1080";
+document.body.innerHTML = `requesting ${url}`;
+fetch(url).then((res) => {
+    if (!res.ok) {
+        document.body.innerHTML = `HTTP error! status: ${res.status}`;
+    }
+    res.text().then((text) => {
+        document.body.innerHTML = text;
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(text, 'text/xml');
+        const items = xmlDoc.getElementsByTagName('item');
+        const result = [];
+        for (let i = 0; i < items.length; i++) {
+            const pubDate = items[i].getElementsByTagName('pubDate')[0]?.textContent;
+            const title = items[i].getElementsByTagName('title')[0].textContent;
+            const link = items[i].getElementsByTagName('link')[0].textContent;
+            result.push({ pubDate, title, link });
+        }
+        document.body.innerHTML = result.map((x) => {
+            console.log(JSON.stringify(x));
+            return `${x["pubDate"]}> ${x["title"]}: <a href='${x["link"]}'>magnet</a>`;
+        }).join('<br>');
+    });
+}).catch((err) => { document.body.innerHTML = err; });
+        </script>
+    </body>
+</html>
