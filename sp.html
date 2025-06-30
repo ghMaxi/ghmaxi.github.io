@@ -28,7 +28,6 @@ function request_sp(url="https://subsplease.org/rss/?r=1080") {
                 result.push({ pubDate, title, link });
             }
             render(result.map((x) => {
-                console.log(JSON.stringify(x));
                 return `${x["pubDate"]}> ${x["title"]}: <a href='${x["link"]}'>magnet</a>`;
             }).join('<br>'));
         });
